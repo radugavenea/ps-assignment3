@@ -28,13 +28,13 @@ public class ClinicController {
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand()){
                 case "admin":
-                    new AdminView();
+                    new AdminController(new AdminView());
                     break;
                 case "doctor":
-                    new DoctorView();
+                    new DoctorController(new DoctorView());
                     break;
                 case  "secretary":
-                    new SecretaryView();
+                    new SecretaryController(new SecretaryView());
                     break;
             }
         }
