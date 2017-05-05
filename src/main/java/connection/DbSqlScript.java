@@ -12,7 +12,7 @@ import java.sql.*;
 public class DbSqlScript {
 
 
-    private static String sqlScriptFilePath = "sql/warehouse_test.sql";
+    private static String sqlScriptFilePath = "sql/clinic_test.sql";
 
     /**
      * Creates test db if not exist and run script to reinitialize de db for unit testing
@@ -22,7 +22,7 @@ public class DbSqlScript {
         try {
             ConnectionFactory.getConnection(ConnectionUrl.testDbUrl);
         } catch (SQLException e) {
-            createNewSchema("warehouse_test");
+            createNewSchema("clinic_test");
         }
 
         try {

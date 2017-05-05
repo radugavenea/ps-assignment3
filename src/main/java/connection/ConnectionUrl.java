@@ -5,6 +5,6 @@ package connection;
  */
 public class ConnectionUrl {
 
-    public static String dbUrl = "jdbc:mysql://localhost:3306/db";
-    public static String testDbUrl = "jdbc:mysql://localhost:3306/testDb";
+    public static String dbUrl = "jdbc:mysql://localhost:3306/clinic";
+    public static String testDbUrl = "jdbc:mysql://localhost:3306/clinic_test";
 }

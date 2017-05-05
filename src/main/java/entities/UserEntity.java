@@ -9,11 +9,20 @@ public class UserEntity {
     private String role;
     private String name;
 
+
     public UserEntity(int id, String role, String name) {
         this.id = id;
         this.role = role;
         this.name = name;
     }
+
+    public UserEntity(String role, String name) {
+        this.role = role;
+        this.name = name;
+    }
+
+    public UserEntity(){}
+
 
     public int getId() {
         return id;

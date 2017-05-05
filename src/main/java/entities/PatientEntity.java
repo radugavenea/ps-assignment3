@@ -23,6 +23,17 @@ public class PatientEntity {
         this.address = address;
     }
 
+    public PatientEntity(String name, String cardNumber, String numericalCode, Date birthday, String address) {
+        this.name = name;
+        this.cardNumber = cardNumber;
+        this.numericalCode = numericalCode;
+        this.birthday = birthday;
+        this.address = address;
+    }
+
+    public PatientEntity(){}
+
+
     public int getId() {
         return id;
     }
