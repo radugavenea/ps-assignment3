@@ -61,20 +61,11 @@ public class AdminView extends JFrame {
     public String getIdInput(){
         return idInput.getText();
     }
-    public void setIdInput(String id){
-        idInput.setText(id);
-    }
     public String getRoleInput(){
         return roleInput.getText();
     }
-    public void setRoleInput(String role){
-        roleInput.setText(role);
-    }
     public String getNameInput(){
         return nameInput.getText();
-    }
-    public void setNameInput(String name){
-        nameInput.setText(name);
     }
 
 
