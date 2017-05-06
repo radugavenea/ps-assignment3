@@ -1,14 +1,17 @@
 package dataAccessLayer;
 
-import dataAccessUtils.GenericDAO;
 import entities.DoctorProgramEntity;
 
-/**
- * Created by radu on 05.05.2017.
- */
-public class DoctorProgramDao extends GenericDAO<DoctorProgramEntity> {
+import java.sql.SQLException;
+import java.util.List;
 
-    public DoctorProgramDao(String connectionUrl) {
-        super(connectionUrl);
-    }
+/**
+ * Created by radu on 06.05.2017.
+ */
+public interface DoctorProgramDao {
+    DoctorProgramEntity getByIdDoctorProgram(int id) throws SQLException;
+    List<DoctorProgramEntity> getAllDoctorPrograms() throws SQLException;
+    int addNewDoctorProgram(DoctorProgramEntity instance) throws SQLException;
+    int updateDoctorProgram(DoctorProgramEntity instance) throws SQLException;
+    int deleteByIdDoctorProgram(int id) throws SQLException;
 }

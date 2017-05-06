@@ -3,8 +3,7 @@ package controllers;
 import businessLayer.UserService;
 import businessLayer.UserServiceImpl;
 import connection.ConnectionUrl;
-import dataAccessLayer.UserDao;
-import entities.UserEntity;
+import dataAccessLayer.UserDaoImpl;
 import views.AdminView;
 
 import javax.swing.event.ListSelectionEvent;
@@ -12,7 +11,6 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -26,7 +24,7 @@ public class AdminController implements Observer{
 
     public AdminController(AdminView view) {
         this.view = view;
-        this.userService = new UserServiceImpl(new UserDao(ConnectionUrl.dbUrl));
+        this.userService = new UserServiceImpl(new UserDaoImpl(ConnectionUrl.dbUrl));
 
         updateTable();
         userService.addObserver(this);

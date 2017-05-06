@@ -1,6 +1,7 @@
 package businessLayer;
 
 import dataAccessLayer.UserDao;
+import dataAccessLayer.UserDaoImpl;
 import entities.UserEntity;
 
 import java.sql.SQLException;
@@ -21,12 +22,12 @@ public class UserServiceImpl extends Observable implements UserService{
 
     @Override
     public List<UserEntity> getAllUsers() throws SQLException {
-        return userDao.getAll();
+        return userDao.getAllUsers();
     }
 
     @Override
     public int addNewUser(String role, String name) throws SQLException {
-        int returnId = userDao.addNew(new UserEntity(role,name));
+        int returnId = userDao.addNewUser(new UserEntity(role,name));
         setChanged();
         notifyObservers();
         return returnId;
@@ -34,7 +35,7 @@ public class UserServiceImpl extends Observable implements UserService{
 
     @Override
     public int editUser(int id, String role, String name) throws SQLException {
-        int returnId = userDao.update(new UserEntity(id,role,name));
+        int returnId = userDao.updateUser(new UserEntity(id,role,name));
         setChanged();
         notifyObservers();
         return returnId;
@@ -42,7 +43,7 @@ public class UserServiceImpl extends Observable implements UserService{
 
     @Override
     public int deleteUserById(int id) throws SQLException {
-        int returnId = userDao.deleteById(id);
+        int returnId = userDao.deleteByIdUser(id);
         setChanged();
         notifyObservers();
         return returnId;
@@ -51,7 +52,7 @@ public class UserServiceImpl extends Observable implements UserService{
     @Override
     public List<String> getMappedUserById(int id) throws SQLException {
         List<String> fields = new ArrayList<>();
-        UserEntity user = userDao.getById(id);
+        UserEntity user = userDao.getByIdUser(id);
         if(user != null){
             fields.add(Integer.toString(user.getId()));
             fields.add(user.getRole());

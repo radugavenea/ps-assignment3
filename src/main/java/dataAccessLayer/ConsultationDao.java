@@ -1,14 +1,17 @@
 package dataAccessLayer;
 
-import dataAccessUtils.GenericDAO;
 import entities.ConsultationEntity;
 
-/**
- * Created by radu on 05.05.2017.
- */
-public class ConsultationDao extends GenericDAO<ConsultationEntity> {
+import java.sql.SQLException;
+import java.util.List;
 
-    public ConsultationDao(String connectionUrl) {
-        super(connectionUrl);
-    }
+/**
+ * Created by radu on 06.05.2017.
+ */
+public interface ConsultationDao {
+    ConsultationEntity getByIdConsultation(int id) throws SQLException;
+    List<ConsultationEntity> getAllConsultations() throws SQLException;
+    int addNewConsultation(ConsultationEntity instance) throws SQLException;
+    int updateConsultation(ConsultationEntity instance) throws SQLException;
+    int deleteByIdConsultation(int id) throws SQLException;
 }

@@ -1,6 +1,7 @@
 import connection.ConnectionUrl;
 import connection.DbSqlScript;
 import dataAccessLayer.UserDao;
+import dataAccessLayer.UserDaoImpl;
 import entities.UserEntity;
 import org.junit.After;
 import org.junit.Before;
@@ -18,44 +19,44 @@ public class UserCRUDTests {
     @Before
     public void init(){
         DbSqlScript.runTestDbSqlScript();
-        userDao = new UserDao(ConnectionUrl.testDbUrl);
+        userDao = new UserDaoImpl(ConnectionUrl.testDbUrl);
     }
 
     @Test
     public void getAllUsersTest() throws SQLException {
-        assert userDao.getAll().size() == 5;
+        assert userDao.getAllUsers().size() == 5;
     }
 
     @Test
     public void getUserByIdTest() throws SQLException {
-        assert userDao.getById(1).getName().equals("admin");
-        assert userDao.getById(3).getRole().equals("secretary");
+        assert userDao.getByIdUser(1).getName().equals("admin");
+        assert userDao.getByIdUser(3).getRole().equals("secretary");
     }
 
     @Test
     public void insertUserTest() throws SQLException {
-        int usersCount = userDao.getAll().size();
-        userDao.addNew(new UserEntity("doctor","Dorel cel Mare"));
-        assert userDao.getAll().size() == usersCount + 1;
+        int usersCount = userDao.getAllUsers().size();
+        userDao.addNewUser(new UserEntity("doctor","Dorel cel Mare"));
+        assert userDao.getAllUsers().size() == usersCount + 1;
     }
 
     @Test
     public void updateUserTest() throws SQLException {
-        assert userDao.getById(1).getName().equals("admin");
+        assert userDao.getByIdUser(1).getName().equals("admin");
 
-        UserEntity userEntity = userDao.getById(1);
+        UserEntity userEntity = userDao.getByIdUser(1);
         userEntity.setName("Gica");
-        userDao.update(userEntity);
+        userDao.updateUser(userEntity);
 
-        assert !userDao.getById(1).getName().equals("admin");
-        assert userDao.getById(1).getName().equals("Gica");
+        assert !userDao.getByIdUser(1).getName().equals("admin");
+        assert userDao.getByIdUser(1).getName().equals("Gica");
     }
 
     @Test
     public void deleteUserTest() throws SQLException {
-        int usersCount = userDao.getAll().size();
-        userDao.deleteById(5);
-        assert userDao.getAll().size() == usersCount - 1;
+        int usersCount = userDao.getAllUsers().size();
+        userDao.deleteByIdUser(5);
+        assert userDao.getAllUsers().size() == usersCount - 1;
     }
 
 
