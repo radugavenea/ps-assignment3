@@ -56,8 +56,8 @@ public class GenericDAO<T> {
      * @return the entity with the specified id
      * @throws SQLException
      */
-    public List<T> getAllById(int id) throws SQLException {
-        String query = queryBuilder.createSelectByFieldQuery(type.getDeclaredFields()[0].getName());
+    public List<T> getAllByField(int id, int fieldIndex) throws SQLException {
+        String query = queryBuilder.createSelectByFieldQuery(type.getDeclaredFields()[fieldIndex].getName());
 
         Connection connection = ConnectionFactory.getConnection(url);
         PreparedStatement statement = connection.prepareStatement(query);

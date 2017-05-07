@@ -39,4 +39,9 @@ public class ConsultationDaoImpl extends GenericDAO<ConsultationEntity> implemen
     public int deleteByIdConsultation(int id) throws SQLException {
         return super.deleteById(id);
     }
+
+    @Override
+    public List<ConsultationEntity> getAllByPatientId(int id, int patientIdIndex) throws SQLException {
+        return super.getAllByField(id,patientIdIndex);
+    }
 }

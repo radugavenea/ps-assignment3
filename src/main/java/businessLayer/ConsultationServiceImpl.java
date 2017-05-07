@@ -65,4 +65,10 @@ public class ConsultationServiceImpl extends Observable implements ConsultationS
         }
         return fields;
     }
+
+    @Override
+    public List<ConsultationEntity> getAllByPatientId(int patientId) throws SQLException {
+        return consultationDao.getAllByPatientId(patientId,5);
+    }
+
 }

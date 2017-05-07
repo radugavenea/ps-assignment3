@@ -14,4 +14,5 @@ public interface ConsultationDao {
     int addNewConsultation(ConsultationEntity instance) throws SQLException;
     int updateConsultation(ConsultationEntity instance) throws SQLException;
     int deleteByIdConsultation(int id) throws SQLException;
+    List<ConsultationEntity> getAllByPatientId(int id, int patientIdIndex) throws SQLException;
 }
