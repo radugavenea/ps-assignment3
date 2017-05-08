@@ -43,4 +43,10 @@ public class UserDaoImpl extends GenericDAO<UserEntity> implements UserDao {
     public List<UserEntity> getUserByName(String doctorName) throws SQLException {
         return super.getAllByStringField(doctorName,2);
     }
+
+
+    @Override
+    public List<UserEntity> getUserByRole(String role) throws SQLException {
+        return super.getAllByStringField(role,1);
+    }
 }

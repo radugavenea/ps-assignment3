@@ -1,7 +1,6 @@
 package businessLayer;
 
 import dataAccessLayer.UserDao;
-import dataAccessLayer.UserDaoImpl;
 import entities.UserEntity;
 
 import java.sql.SQLException;
@@ -50,6 +49,11 @@ public class UserServiceImpl extends Observable implements UserService{
     }
 
     @Override
+    public UserEntity getUserByRole(String role) throws SQLException {
+        return userDao.getUserByRole(role).get(0);
+    }
+
+    @Override
     public List<String> getMappedUserById(int id) throws SQLException {
         List<String> fields = new ArrayList<>();
         UserEntity user = userDao.getByIdUser(id);
@@ -59,5 +63,14 @@ public class UserServiceImpl extends Observable implements UserService{
             fields.add(user.getName());
         }
         return fields.isEmpty() ? null : fields;
+    }
+
+    public UserEntity getUserByCredentials(String username, String role) throws SQLException {
+        List<UserEntity> usersByUsername = userDao.getUserByName(username);
+        UserEntity user = usersByUsername.get(0);
+        if(user.getRole().equals(role)){
+            return user;
+        }
+        return null;
     }
 }

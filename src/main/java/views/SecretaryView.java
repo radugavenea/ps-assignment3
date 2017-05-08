@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by radu on 05.05.2017.
  */
-public class SecretaryView extends JFrame {
+public class SecretaryView{
 
     private JFrame frame = new JFrame("Secretary View");
     private JTabbedPane tabbedPane = new JTabbedPane();
@@ -75,13 +75,14 @@ public class SecretaryView extends JFrame {
 
 
 
-    public SecretaryView() throws HeadlessException {
-        initializeFrame();
+    public SecretaryView(String username) throws HeadlessException {
+        initializeFrame(username);
     }
 
 
-    private void initializeFrame(){
+    private void initializeFrame(String username){
 
+        frame.setTitle("Secretary View for username " + username);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setSize(800,600);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -232,4 +233,7 @@ public class SecretaryView extends JFrame {
         return panel;
     }
 
+    public void setVisible(boolean visible) {
+        frame.setVisible(visible);
+    }
 }

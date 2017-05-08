@@ -17,5 +17,6 @@ public interface UserService {
     int editUser(int id, String role, String name) throws SQLException;
     int deleteUserById(int id) throws SQLException;
     void addObserver(Observer o);
-
+    UserEntity getUserByRole(String role) throws SQLException;
+    UserEntity getUserByCredentials(String username, String role) throws SQLException;
 }

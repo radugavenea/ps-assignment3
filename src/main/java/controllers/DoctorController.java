@@ -2,8 +2,12 @@ package controllers;
 
 import businessLayer.ConsultationService;
 import businessLayer.ConsultationServiceImpl;
+import businessLayer.DoctorProgramService;
+import businessLayer.DoctorProgramServiceImpl;
 import connection.ConnectionUrl;
 import dataAccessLayer.ConsultationDaoImpl;
+import dataAccessLayer.DoctorProgramDaoImpl;
+import dataAccessLayer.UserDaoImpl;
 import entities.ConsultationEntity;
 import views.DoctorView;
 
@@ -16,6 +20,7 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -25,12 +30,21 @@ import java.util.Observer;
 public class DoctorController implements Observer {
 
     private DoctorView view;
+    private String username;
     private ConsultationService consultationService;
+    private DoctorProgramService doctorProgramService;
     private DateFormat timeFormatter = new SimpleDateFormat("HH:mm");
 
-    public DoctorController(DoctorView view) {
+//    public DoctorController(DoctorView view, SecretaryController secretaryController) {
+    public DoctorController(DoctorView view, String username, SecretaryController secretaryController) {
         this.view = view;
+        this.username = username;
         this.consultationService = new ConsultationServiceImpl(new ConsultationDaoImpl(ConnectionUrl.dbUrl));
+        this.doctorProgramService = new DoctorProgramServiceImpl(new DoctorProgramDaoImpl(ConnectionUrl.dbUrl),
+                new ConsultationDaoImpl(ConnectionUrl.dbUrl),new UserDaoImpl(ConnectionUrl.dbUrl));
+
+        secretaryController.addObserver(this);
+//        consultationService.addObserver(this);
 
         view.addConsultationTableListener(new DoctorConsultationTableListener());
         view.addButtonsListener(new DoctorButtonsListener());
@@ -38,12 +52,14 @@ public class DoctorController implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        updateConsultationTable();
+        if(((String)arg).equals(this.username)){
+            view.displayNewConsultationMessage(this.username);
+        }
     }
 
     private void updateConsultationTable(){
         try {
-            view.updateConsultationTable(consultationService.getAllByPatientId(Integer.parseInt(view.getPatientIdInput())));
+            view.updateConsultationTable(consultationService.getAllByPatientIdForDoctor(Integer.parseInt(view.getPatientIdInput()),username));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -60,15 +76,29 @@ public class DoctorController implements Observer {
                     break;
                 case "add":
                     try {
-                        consultationService.addNewConsultation(new ConsultationEntity(
-                                new Time(timeFormatter.parse(view.getConsultationStartsAtInput()).getTime()),
-                                new Time(timeFormatter.parse(view.getConsultationEndsAtInput()).getTime()),
+                        if(doctorProgramService.doctorIsAvailableInInterval(
                                 view.getConsultationDoctorsNameInput(),
-                                Integer.parseInt(view.getConsultationUserIdInput()),
-                                Integer.parseInt(view.getConsultationPatientIdInput())));
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
+                                new Time(timeFormatter.parse(view.getConsultationStartsAtInput()).getTime()),
+                                new Time(timeFormatter.parse(view.getConsultationEndsAtInput()).getTime()))){
+                            try {
+                                consultationService.addNewConsultation(new ConsultationEntity(
+                                        new Time(timeFormatter.parse(view.getConsultationStartsAtInput()).getTime()),
+                                        new Time(timeFormatter.parse(view.getConsultationEndsAtInput()).getTime()),
+                                        view.getConsultationDoctorsNameInput(),
+                                        Integer.parseInt(view.getConsultationUserIdInput()),
+                                        Integer.parseInt(view.getConsultationPatientIdInput())),username);
+                            } catch (SQLException e1) {
+                                e1.printStackTrace();
+                            } catch (ParseException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                        else{
+                            view.displayDoctorNotAvailableMessage();
+                        }
                     } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
                     break;

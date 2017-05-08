@@ -13,10 +13,11 @@ import java.util.Observer;
  */
 public interface ConsultationService {
     List<ConsultationEntity> getAllConsultations() throws SQLException;
-    int addNewConsultation(ConsultationEntity consultation) throws SQLException;
+    int addNewConsultation(ConsultationEntity consultation, String username) throws SQLException;
     int editConsultation(ConsultationEntity consultation) throws SQLException;
     int deleteByIdConsultation(int id) throws SQLException;
     List<String> getMappedConsultationById(int id) throws SQLException;
     List<ConsultationEntity> getAllByPatientId(int patientId) throws SQLException;
     void addObserver(Observer o);
+    List<ConsultationEntity> getAllByPatientIdForDoctor(int patientId, String doctorName) throws SQLException;
 }

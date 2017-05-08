@@ -21,9 +21,11 @@ public class AdminController implements Observer{
 
     private AdminView view;
     private UserService userService;
+    private String username;
 
-    public AdminController(AdminView view) {
+    public AdminController(AdminView view, String username) {
         this.view = view;
+        this.username = username;
         this.userService = new UserServiceImpl(new UserDaoImpl(ConnectionUrl.dbUrl));
 
         updateTable();

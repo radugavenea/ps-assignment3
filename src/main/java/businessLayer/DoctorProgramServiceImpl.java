@@ -49,10 +49,12 @@ public class DoctorProgramServiceImpl implements DoctorProgramService {
         List<ConsultationEntity> consultations = consultationDao.getAllByDoctorsName(doctor.getName());
 
         for (int i=0; i< consultations.size(); i++){
-            if((startsAt.compareTo(consultations.get(i).getStartsAtTime()) > 0 &&
-                    startsAt.compareTo(consultations.get(i).getEndsAtTime()) < 0) ||
-                    (endsAt.compareTo(consultations.get(i).getStartsAtTime()) > 0 &&
-                    endsAt.compareTo(consultations.get(i).getEndsAtTime()) < 0))
+            if((startsAt.compareTo(consultations.get(i).getStartsAtTime()) >= 0 &&
+                    startsAt.compareTo(consultations.get(i).getEndsAtTime()) <= 0) ||
+                    (endsAt.compareTo(consultations.get(i).getStartsAtTime()) >= 0 &&
+                    endsAt.compareTo(consultations.get(i).getEndsAtTime()) <= 0) ||
+                    (startsAt.compareTo(consultations.get(i).getStartsAtTime()) <= 0 &&
+                    endsAt.compareTo(consultations.get(i).getEndsAtTime()) >= 0))
                     {
                 return true;
             }

@@ -12,6 +12,7 @@ import views.SecretaryView;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.text.View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -26,17 +27,19 @@ import java.util.Observer;
 /**
  * Created by radu on 05.05.2017.
  */
-public class SecretaryController implements Observer {
+public class SecretaryController extends Observable implements Observer {
 
     private SecretaryView view;
+    private String username;
     private PatientService patientService;
     private ConsultationService consultationService;
     private DoctorProgramService doctorProgramService;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private DateFormat timeFormatter = new SimpleDateFormat("HH:mm");
 
-    public SecretaryController(SecretaryView view) {
+    public SecretaryController(SecretaryView view, String username) {
         this.view = view;
+        this.username = username;
         this.patientService = new PatientServiceImpl(new PatientDaoImpl(ConnectionUrl.dbUrl));
         this.consultationService = new ConsultationServiceImpl(new ConsultationDaoImpl(ConnectionUrl.dbUrl));
         this.doctorProgramService = new DoctorProgramServiceImpl(new DoctorProgramDaoImpl(ConnectionUrl.dbUrl),
@@ -79,6 +82,14 @@ public class SecretaryController implements Observer {
             e.printStackTrace();
         }
 
+    }
+
+    public void setVisible(SecretaryView secretaryView) {
+        secretaryView.setVisible(true);
+    }
+
+    public void setVisible(boolean visible) {
+        view.setVisible(true);
     }
 
 
@@ -152,7 +163,10 @@ public class SecretaryController implements Observer {
                                         new Time(timeFormatter.parse(view.getConsultationEndsAtInput()).getTime()),
                                         view.getConsultationDoctorsNameInput(),
                                         Integer.parseInt(view.getConsultationUserIdInput()),
-                                        Integer.parseInt(view.getConsultationPatientIdInput())));
+                                        Integer.parseInt(view.getConsultationPatientIdInput())),
+                                        view.getConsultationDoctorsNameInput());
+                                setChanged();
+                                notifyObservers(view.getConsultationDoctorsNameInput());
                             } catch (SQLException e1) {
                                 e1.printStackTrace();
                             } catch (ParseException e1) {

@@ -15,4 +15,5 @@ public interface UserDao {
     int deleteByIdUser(int id) throws SQLException;
     UserEntity getByIdUser(int id) throws SQLException;
     List<UserEntity> getUserByName(String doctorName) throws SQLException;
+    List<UserEntity> getUserByRole(String role) throws SQLException;
 }

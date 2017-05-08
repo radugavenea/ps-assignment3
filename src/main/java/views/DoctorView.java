@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class DoctorView extends JFrame {
 
-    private JFrame frame = new JFrame("Doctor View");
+    private JFrame frame = new JFrame();
 
     private JPanel consultationButtonPanel = new JPanel();
     private JPanel consultationInputPanel = makeTextPanel();
@@ -43,12 +43,13 @@ public class DoctorView extends JFrame {
     private JButton consultationReadButton = new JButton("Read");
     private JButton consultationAddButton = new JButton("Add");
 
-    public DoctorView() throws HeadlessException {
-        initializeFrame();
+    public DoctorView(String username) throws HeadlessException {
+        initializeFrame(username);
     }
 
-    private void initializeFrame() {
+    private void initializeFrame(String username) {
 
+        frame.setTitle("Doctor View for doctor username " + username);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setSize(800, 600);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -93,6 +94,7 @@ public class DoctorView extends JFrame {
     }
 
     public void updateConsultationTable(List<ConsultationEntity> consultations) {
+        if(consultations != null)
         consultationTableModel.setDataVector(consultations);
     }
 
@@ -103,6 +105,14 @@ public class DoctorView extends JFrame {
         consultationDoctorsNameInput.setText(consultationFields.get(3));
         consultationUserIdInput.setText(consultationFields.get(4));
         consultationPatientIdInput.setText(consultationFields.get(5));
+    }
+
+    public void displayDoctorNotAvailableMessage() {
+        JOptionPane.showMessageDialog(frame, "Doctor not available for this period of time.");
+    }
+
+    public void displayNewConsultationMessage(String doctorName) {
+        JOptionPane.showMessageDialog(frame,"A new consultation has been made for doctor: " + doctorName);
     }
 
     private void setUpDoctorPane() {

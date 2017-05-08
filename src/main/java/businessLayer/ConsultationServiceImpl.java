@@ -28,10 +28,10 @@ public class ConsultationServiceImpl extends Observable implements ConsultationS
     }
 
     @Override
-    public int addNewConsultation(ConsultationEntity consultation) throws SQLException {
+    public int addNewConsultation(ConsultationEntity consultation, String username) throws SQLException {
         int returnId = consultationDao.addNewConsultation(consultation);
         setChanged();
-        notifyObservers(this);
+        notifyObservers((Object) username);
         return returnId;
     }
 
@@ -70,6 +70,18 @@ public class ConsultationServiceImpl extends Observable implements ConsultationS
     @Override
     public List<ConsultationEntity> getAllByPatientId(int patientId) throws SQLException {
         return consultationDao.getAllByPatientId(patientId,5);
+    }
+
+    @Override
+    public List<ConsultationEntity> getAllByPatientIdForDoctor(int patientId, String doctorName) throws SQLException {
+        List<ConsultationEntity> consultationEntities = consultationDao.getAllByPatientId(patientId, 5);
+        List<ConsultationEntity> consultations = new ArrayList<>();
+        for(int i=0; i<consultationEntities.size(); i++){
+            if(consultationEntities.get(i).getDoctorsName().equals(doctorName)){
+                consultations.add(consultationEntities.get(i));
+            }
+        }
+        return consultations.isEmpty() ? null : consultations;
     }
 
 

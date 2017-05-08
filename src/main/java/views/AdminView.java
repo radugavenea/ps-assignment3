@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class AdminView extends JFrame {
 
-    private JFrame frame = new JFrame("Administrator View");
+    private JFrame frame = new JFrame();
     private JPanel buttonPanel = new JPanel();
     private JPanel inputPanel = makeTextPanel();
     private GenericTableModel userTableModel = new UserTableModel();
@@ -38,13 +38,14 @@ public class AdminView extends JFrame {
     private JButton deleteButton = new JButton("Delete");
 
 
-    public AdminView() throws HeadlessException {
-        initializeFrame();
+    public AdminView(String username) throws HeadlessException {
+        initializeFrame(username);
     }
 
 
-    private void initializeFrame(){
+    private void initializeFrame(String username){
 
+        frame.setTitle("Administrator View for admin username: " + username);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setSize(800,600);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
