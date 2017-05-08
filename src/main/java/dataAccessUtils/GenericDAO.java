@@ -56,12 +56,35 @@ public class GenericDAO<T> {
      * @return the entity with the specified id
      * @throws SQLException
      */
-    public List<T> getAllByField(int id, int fieldIndex) throws SQLException {
+    public List<T> getAllByFieldId(int id, int fieldIndex) throws SQLException {
         String query = queryBuilder.createSelectByFieldQuery(type.getDeclaredFields()[fieldIndex].getName());
 
         Connection connection = ConnectionFactory.getConnection(url);
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setInt(1, id);
+        ResultSet resultSet = statement.executeQuery();
+
+        List<T> list = statementGenerator.createObjects(resultSet);
+
+        resultSet.close();
+        statement.close();
+        connection.close();
+
+        return list;
+    }
+
+    /**
+     * Gets entity from db based on id
+     * @param name
+     * @return the entity with the specified id
+     * @throws SQLException
+     */
+    public List<T> getAllByStringField(String name, int fieldIndex) throws SQLException {
+        String query = queryBuilder.createSelectByFieldQuery(type.getDeclaredFields()[fieldIndex].getName());
+
+        Connection connection = ConnectionFactory.getConnection(url);
+        PreparedStatement statement = connection.prepareStatement(query);
+        statement.setString(1, name);
         ResultSet resultSet = statement.executeQuery();
 
         List<T> list = statementGenerator.createObjects(resultSet);

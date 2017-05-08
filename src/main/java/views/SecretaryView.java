@@ -177,6 +177,10 @@ public class SecretaryView extends JFrame {
     }
 
 
+    public void displayDoctorNotAvailableMessage() {
+        JOptionPane.showMessageDialog(frame, "Doctor not available for this period of time.");
+    }
+
     private void setUpPatientTab(){
         patientTable.setModel(patientTableModel);
         patientInsideSplitPane.setDividerLocation(300);
@@ -227,4 +231,5 @@ public class SecretaryView extends JFrame {
         panel.setLayout(new GridLayout(0, 2));
         return panel;
     }
+
 }

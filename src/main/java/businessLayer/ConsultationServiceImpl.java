@@ -5,6 +5,7 @@ import dataAccessLayer.PatientDao;
 import entities.ConsultationEntity;
 
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -70,5 +71,6 @@ public class ConsultationServiceImpl extends Observable implements ConsultationS
     public List<ConsultationEntity> getAllByPatientId(int patientId) throws SQLException {
         return consultationDao.getAllByPatientId(patientId,5);
     }
+
 
 }

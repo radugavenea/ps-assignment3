@@ -39,4 +39,9 @@ public class DoctorProgramDaoImpl extends GenericDAO<DoctorProgramEntity> implem
     public int deleteByIdDoctorProgram(int id) throws SQLException {
         return super.deleteById(id);
     }
+
+    @Override
+    public List<DoctorProgramEntity> getDoctorProgramByDoctorId(int id) throws SQLException {
+        return super.getAllByFieldId(id, 3);
+    }
 }

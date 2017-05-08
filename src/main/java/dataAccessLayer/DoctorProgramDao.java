@@ -14,4 +14,5 @@ public interface DoctorProgramDao {
     int addNewDoctorProgram(DoctorProgramEntity instance) throws SQLException;
     int updateDoctorProgram(DoctorProgramEntity instance) throws SQLException;
     int deleteByIdDoctorProgram(int id) throws SQLException;
+    List<DoctorProgramEntity> getDoctorProgramByDoctorId(int id) throws SQLException;
 }

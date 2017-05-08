@@ -1,12 +1,11 @@
 package controllers;
 
-import businessLayer.PatientService;
-import businessLayer.PatientServiceImpl;
-import businessLayer.ConsultationService;
-import businessLayer.ConsultationServiceImpl;
+import businessLayer.*;
 import connection.ConnectionUrl;
 import dataAccessLayer.ConsultationDaoImpl;
+import dataAccessLayer.DoctorProgramDaoImpl;
 import dataAccessLayer.PatientDaoImpl;
+import dataAccessLayer.UserDaoImpl;
 import entities.ConsultationEntity;
 import entities.PatientEntity;
 import views.SecretaryView;
@@ -32,6 +31,7 @@ public class SecretaryController implements Observer {
     private SecretaryView view;
     private PatientService patientService;
     private ConsultationService consultationService;
+    private DoctorProgramService doctorProgramService;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private DateFormat timeFormatter = new SimpleDateFormat("HH:mm");
 
@@ -39,6 +39,8 @@ public class SecretaryController implements Observer {
         this.view = view;
         this.patientService = new PatientServiceImpl(new PatientDaoImpl(ConnectionUrl.dbUrl));
         this.consultationService = new ConsultationServiceImpl(new ConsultationDaoImpl(ConnectionUrl.dbUrl));
+        this.doctorProgramService = new DoctorProgramServiceImpl(new DoctorProgramDaoImpl(ConnectionUrl.dbUrl),
+                new ConsultationDaoImpl(ConnectionUrl.dbUrl), new UserDaoImpl(ConnectionUrl.dbUrl));
 
         updatePatientTable();
         updateConsultationTable();
@@ -93,18 +95,19 @@ public class SecretaryController implements Observer {
                     }
                     break;
                 case "add":
-                    try {
-                        patientService.addNewPatient(new PatientEntity(
-                                view.getPatientNameInput(),
-                                view.getPatientCardNumberInput(),
-                                view.getPatientNumericalCodeInput(),
-                                new Date(dateFormat.parse(view.getPatientBirthdayInput()).getTime()),
-                                view.getPatientAddressInput()));
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
-                    } catch (ParseException e1) {
-                        e1.printStackTrace();
-                    }
+                        try {
+                            patientService.addNewPatient(new PatientEntity(
+                                    view.getPatientNameInput(),
+                                    view.getPatientCardNumberInput(),
+                                    view.getPatientNumericalCodeInput(),
+                                    new Date(dateFormat.parse(view.getPatientBirthdayInput()).getTime()),
+                                    view.getPatientAddressInput()));
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
+
                     break;
                 case "edit":
                     try {
@@ -139,15 +142,29 @@ public class SecretaryController implements Observer {
                     break;
                 case "add":
                     try {
-                        consultationService.addNewConsultation(new ConsultationEntity(
-                                new Time(timeFormatter.parse(view.getConsultationStartsAtInput()).getTime()),
-                                new Time(timeFormatter.parse(view.getConsultationEndsAtInput()).getTime()),
+                        if(doctorProgramService.doctorIsAvailableInInterval(
                                 view.getConsultationDoctorsNameInput(),
-                                Integer.parseInt(view.getConsultationUserIdInput()),
-                                Integer.parseInt(view.getConsultationPatientIdInput())));
-                    } catch (SQLException e1) {
-                        e1.printStackTrace();
+                                new Time(timeFormatter.parse(view.getConsultationStartsAtInput()).getTime()),
+                                new Time(timeFormatter.parse(view.getConsultationEndsAtInput()).getTime()))){
+                            try {
+                                consultationService.addNewConsultation(new ConsultationEntity(
+                                        new Time(timeFormatter.parse(view.getConsultationStartsAtInput()).getTime()),
+                                        new Time(timeFormatter.parse(view.getConsultationEndsAtInput()).getTime()),
+                                        view.getConsultationDoctorsNameInput(),
+                                        Integer.parseInt(view.getConsultationUserIdInput()),
+                                        Integer.parseInt(view.getConsultationPatientIdInput())));
+                            } catch (SQLException e1) {
+                                e1.printStackTrace();
+                            } catch (ParseException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+                        else{
+                            view.displayDoctorNotAvailableMessage();
+                        }
                     } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    } catch (SQLException e1) {
                         e1.printStackTrace();
                     }
                     break;
@@ -204,4 +221,6 @@ public class SecretaryController implements Observer {
             }
         }
     }
+
+
 }

@@ -42,6 +42,11 @@ public class ConsultationDaoImpl extends GenericDAO<ConsultationEntity> implemen
 
     @Override
     public List<ConsultationEntity> getAllByPatientId(int id, int patientIdIndex) throws SQLException {
-        return super.getAllByField(id,patientIdIndex);
+        return super.getAllByFieldId(id,patientIdIndex);
+    }
+
+    @Override
+    public List<ConsultationEntity> getAllByDoctorsName(String name) throws SQLException {
+        return super.getAllByStringField(name,3);
     }
 }
