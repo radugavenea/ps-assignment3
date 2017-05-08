@@ -3,7 +3,6 @@ package businessLayer;
 import entities.PatientEntity;
 
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.List;
 import java.util.Observer;
 

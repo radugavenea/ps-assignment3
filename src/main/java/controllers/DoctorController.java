@@ -1,9 +1,6 @@
 package controllers;
 
-import businessLayer.ConsultationService;
-import businessLayer.ConsultationServiceImpl;
-import businessLayer.DoctorProgramService;
-import businessLayer.DoctorProgramServiceImpl;
+import businessLayer.*;
 import connection.ConnectionUrl;
 import dataAccessLayer.ConsultationDaoImpl;
 import dataAccessLayer.DoctorProgramDaoImpl;
@@ -20,7 +17,6 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -29,22 +25,22 @@ import java.util.Observer;
  */
 public class DoctorController implements Observer {
 
+    private DateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+
     private DoctorView view;
     private String username;
     private ConsultationService consultationService;
     private DoctorProgramService doctorProgramService;
-    private DateFormat timeFormatter = new SimpleDateFormat("HH:mm");
 
-//    public DoctorController(DoctorView view, SecretaryController secretaryController) {
-    public DoctorController(DoctorView view, String username, SecretaryController secretaryController) {
+
+    public DoctorController(DoctorView view, String username, SecretaryNotifierService secretaryNotifierService) {
         this.view = view;
         this.username = username;
         this.consultationService = new ConsultationServiceImpl(new ConsultationDaoImpl(ConnectionUrl.dbUrl));
         this.doctorProgramService = new DoctorProgramServiceImpl(new DoctorProgramDaoImpl(ConnectionUrl.dbUrl),
                 new ConsultationDaoImpl(ConnectionUrl.dbUrl),new UserDaoImpl(ConnectionUrl.dbUrl));
 
-        secretaryController.addObserver(this);
-//        consultationService.addObserver(this);
+        secretaryNotifierService.addObserver(this);
 
         view.addConsultationTableListener(new DoctorConsultationTableListener());
         view.addButtonsListener(new DoctorButtonsListener());
@@ -72,7 +68,16 @@ public class DoctorController implements Observer {
         public void actionPerformed(ActionEvent e) {
             switch (e.getActionCommand()){
                 case "read":
-                    updateConsultationTable();
+                    if(view.getPatientIdInput().equals("")){
+                        try {
+                            view.updateConsultationTable(consultationService.getAllConsultationByDoctorName(username));
+                        } catch (SQLException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
+                    else {
+                        updateConsultationTable();
+                    }
                     break;
                 case "add":
                     try {

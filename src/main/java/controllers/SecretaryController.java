@@ -12,7 +12,6 @@ import views.SecretaryView;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.text.View;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -29,17 +28,20 @@ import java.util.Observer;
  */
 public class SecretaryController extends Observable implements Observer {
 
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private DateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+
     private SecretaryView view;
     private String username;
     private PatientService patientService;
     private ConsultationService consultationService;
     private DoctorProgramService doctorProgramService;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private DateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+    private SecretaryNotifierService notifierService;
 
-    public SecretaryController(SecretaryView view, String username) {
+    public SecretaryController(SecretaryView view, String username, SecretaryNotifierService notifierService) {
         this.view = view;
         this.username = username;
+        this.notifierService = notifierService;
         this.patientService = new PatientServiceImpl(new PatientDaoImpl(ConnectionUrl.dbUrl));
         this.consultationService = new ConsultationServiceImpl(new ConsultationDaoImpl(ConnectionUrl.dbUrl));
         this.doctorProgramService = new DoctorProgramServiceImpl(new DoctorProgramDaoImpl(ConnectionUrl.dbUrl),
@@ -165,8 +167,10 @@ public class SecretaryController extends Observable implements Observer {
                                         Integer.parseInt(view.getConsultationUserIdInput()),
                                         Integer.parseInt(view.getConsultationPatientIdInput())),
                                         view.getConsultationDoctorsNameInput());
-                                setChanged();
-                                notifyObservers(view.getConsultationDoctorsNameInput());
+
+
+                                notifierService.notifyDoctor(view.getConsultationDoctorsNameInput());
+
                             } catch (SQLException e1) {
                                 e1.printStackTrace();
                             } catch (ParseException e1) {

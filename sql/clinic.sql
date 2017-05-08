@@ -95,7 +95,7 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
 INSERT INTO `clinic`.`userEntity` (`id`, `role`, `name`) VALUES ('1', 'admin', 'admin');
-INSERT INTO `clinic`.`userEntity` (`id`, `role`, `name`) VALUES ('2', 'doctor', 'AssMan');
+INSERT INTO `clinic`.`userEntity` (`id`, `role`, `name`) VALUES ('2', 'doctor', 'Dorel');
 INSERT INTO `clinic`.`userEntity` (`id`, `role`, `name`) VALUES ('3', 'secretary', 'Petunia');
 INSERT INTO `clinic`.`userEntity` (`id`, `role`, `name`) VALUES ('4', 'doctor', 'Gigel');
 INSERT INTO `clinic`.`userEntity` (`id`, `role`, `name`) VALUES ('5', 'doctor', 'Vrigin Toader');
@@ -110,7 +110,7 @@ INSERT INTO `clinic`.`patientEntity` (`id`, `name`, `cardNumber`, `numericalCode
 INSERT INTO `clinic`.`patientEntity` (`id`, `name`, `cardNumber`, `numericalCode`, `birthday`, `address`) VALUES ('5','Buletin Petre','56775','6475323546', '1978-11-27', 'unde vrea el');
 INSERT INTO `clinic`.`patientEntity` (`id`, `name`, `cardNumber`, `numericalCode`, `birthday`, `address`) VALUES ('6','Trica Buton','34543','234536475', '2000-05-02', 'in dormitor');
 
-INSERT INTO `clinic`.`consultationEntity` (`id`, `startsAtTime`, `endsAtTime`, `doctorsName`, `userId`, `patientId`) VALUES ('1', '08:00:00', '08:30:00', 'AssMan', '3', '1');
+INSERT INTO `clinic`.`consultationEntity` (`id`, `startsAtTime`, `endsAtTime`, `doctorsName`, `userId`, `patientId`) VALUES ('1', '08:00:00', '08:30:00', 'Dorel', '3', '1');
 INSERT INTO `clinic`.`consultationEntity` (`id`, `startsAtTime`, `endsAtTime`, `doctorsName`, `userId`, `patientId`) VALUES ('2', '13:45:00', '14:30:00', 'Gigel', '3', '4');
 
 

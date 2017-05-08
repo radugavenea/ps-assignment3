@@ -1,5 +1,7 @@
 package controllers;
 
+import businessLayer.SecretaryNotifierService;
+import businessLayer.SecretaryNotifierServiceImpl;
 import businessLayer.UserService;
 import businessLayer.UserServiceImpl;
 import connection.ConnectionUrl;
@@ -17,18 +19,21 @@ import java.sql.SQLException;
 /**
  * Created by radu on 08.05.2017.
  */
-public class LoginController {
+public class LoginController{
 
     private LoginView loginView;
     private UserService userService;
-    private SecretaryController secretaryController;
+    private SecretaryNotifierService notifierService;
 
     public LoginController(LoginView loginView) {
         this.loginView = loginView;
         this.userService = new UserServiceImpl(new UserDaoImpl(ConnectionUrl.dbUrl));
+        this.notifierService = new SecretaryNotifierServiceImpl();
 
         loginView.addLoginListener(new LoginListener());
     }
+
+
 
 
     class LoginListener implements ActionListener{
@@ -47,10 +52,10 @@ public class LoginController {
                         new AdminController(new AdminView(loginView.getUsername()), loginView.getUsername());
                         break;
                     case "doctor":
-                        new DoctorController(new DoctorView(loginView.getUsername()), loginView.getUsername(), secretaryController);
+                        new DoctorController(new DoctorView(loginView.getUsername()), loginView.getUsername(), notifierService);
                         break;
                     case "secretary":
-                        secretaryController = new SecretaryController(new SecretaryView(loginView.getUsername()), loginView.getUsername());
+                        new SecretaryController(new SecretaryView(loginView.getUsername()), loginView.getUsername(), notifierService);
                         break;
                 }
             }

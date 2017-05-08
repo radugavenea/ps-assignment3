@@ -1,11 +1,9 @@
 package businessLayer;
 
 import dataAccessLayer.ConsultationDao;
-import dataAccessLayer.PatientDao;
 import entities.ConsultationEntity;
 
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -31,7 +29,7 @@ public class ConsultationServiceImpl extends Observable implements ConsultationS
     public int addNewConsultation(ConsultationEntity consultation, String username) throws SQLException {
         int returnId = consultationDao.addNewConsultation(consultation);
         setChanged();
-        notifyObservers((Object) username);
+        notifyObservers(this);
         return returnId;
     }
 
@@ -68,13 +66,13 @@ public class ConsultationServiceImpl extends Observable implements ConsultationS
     }
 
     @Override
-    public List<ConsultationEntity> getAllByPatientId(int patientId) throws SQLException {
-        return consultationDao.getAllByPatientId(patientId,5);
+    public List<ConsultationEntity> getAllConsultationByDoctorName(String name) throws SQLException {
+        return consultationDao.getAllByDoctorsName(name);
     }
 
     @Override
     public List<ConsultationEntity> getAllByPatientIdForDoctor(int patientId, String doctorName) throws SQLException {
-        List<ConsultationEntity> consultationEntities = consultationDao.getAllByPatientId(patientId, 5);
+        List<ConsultationEntity> consultationEntities = consultationDao.getAllByPatientId(patientId);
         List<ConsultationEntity> consultations = new ArrayList<>();
         for(int i=0; i<consultationEntities.size(); i++){
             if(consultationEntities.get(i).getDoctorsName().equals(doctorName)){

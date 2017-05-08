@@ -1,10 +1,8 @@
 package businessLayer;
 
 import entities.ConsultationEntity;
-import entities.PatientEntity;
 
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.List;
 import java.util.Observer;
 
@@ -17,7 +15,7 @@ public interface ConsultationService {
     int editConsultation(ConsultationEntity consultation) throws SQLException;
     int deleteByIdConsultation(int id) throws SQLException;
     List<String> getMappedConsultationById(int id) throws SQLException;
-    List<ConsultationEntity> getAllByPatientId(int patientId) throws SQLException;
+    List<ConsultationEntity> getAllConsultationByDoctorName(String doctorName) throws SQLException;
     void addObserver(Observer o);
     List<ConsultationEntity> getAllByPatientIdForDoctor(int patientId, String doctorName) throws SQLException;
 }

@@ -23,6 +23,7 @@ public class AdminController implements Observer{
     private UserService userService;
     private String username;
 
+
     public AdminController(AdminView view, String username) {
         this.view = view;
         this.username = username;
@@ -34,6 +35,7 @@ public class AdminController implements Observer{
         view.addTableSelectionListener(new TableListSelectionListener());
         view.addButtonsListener(new ButtonListener());
     }
+
 
     @Override
     public void update(Observable o, Object arg) {
